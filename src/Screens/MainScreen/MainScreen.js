@@ -1,21 +1,26 @@
 import React from 'react';
-import {View, Text, Image} from 'react-native';
+import {View, Text, Image, ScrollView} from 'react-native';
 import Table from '../../components/table/Table';
 import Styles from './MainScreen.style';
 import {getIcons} from '../../utils/helperMethods';
+import {weatherDetails} from '../../mockData/weatherDetails';
 
 export default function MainScreen() {
-  const tableInfo = [
-    {temp: '34', time: '3.30PM', icon: 'Sunny'},
-    {temp: '35', time: '3.30PM', icon: 'Sunny'},
-  ];
+  const getHourlyDetails = () => {
+    const weatherHourly = weatherDetails['hourly'].data.slice(0, 7);
+    return weatherHourly.map((obj) => {
+      return {time: obj.time, icon: obj.icon, temperature: obj.temperature};
+    });
+  };
   return (
     <View style={Styles.mainContainer}>
       <Text>Location</Text>
       <Text>Summary</Text>
       <Text>Temprature</Text>
       <Image style={Styles.iconImg} source={getIcons('clear-day')} />
-      <Table tableData={tableInfo} />
+      <ScrollView>
+        <Table tableData={getHourlyDetails()} />
+      </ScrollView>
     </View>
   );
 }
